@@ -156,8 +156,7 @@ class _RPSGameState extends State<RPSGame> {
                 ),
                 Column(
                   children: [
-                    const Text
-                      ('Computer Score', style: TextStyle(fontSize: 16)),
+                    const Text('Computer Score', style: TextStyle(fontSize: 16)),
                     Text(
                       '$_computerScore',
                       style: const TextStyle(
@@ -169,9 +168,47 @@ class _RPSGameState extends State<RPSGame> {
                 ),
               ],
             ),
+            const SizedBox(height: 40),
+            // Малюємо прямокутник з кружечками
+            CustomPaint(
+              size: Size(double.infinity, 400), // розмір Canvas
+              painter: RectangleWithCirclesPainter(),
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class RectangleWithCirclesPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3;
+
+    // Малюємо прямокутник
+    Rect rect = Rect.fromLTWH(50, 100, size.width - 100, size.height - 200);
+    canvas.drawRect(rect, paint);
+
+    // Малюємо кружечки по кутах та в центрі
+    paint.color = Colors.red;
+    paint.style = PaintingStyle.fill;
+
+    // Кути
+    canvas.drawCircle(Offset(60, 110), 10, paint); // верхній лівий
+    canvas.drawCircle(Offset(size.width - 60, 110), 10, paint); // верхній правий
+    canvas.drawCircle(Offset(60, size.height - 110), 10, paint); // нижній лівий
+    canvas.drawCircle(Offset(size.width - 60, size.height - 110), 10, paint); // нижній правий
+
+    // Центр
+    canvas.drawCircle(Offset(size.width / 2, size.height / 2), 10, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
